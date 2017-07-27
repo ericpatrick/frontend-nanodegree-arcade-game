@@ -1,6 +1,16 @@
-frontend-nanodegree-arcade-game
-===============================
+# Cross Road Game
 
-Students should use this [rubric](https://review.udacity.com/#!/projects/2696458597/rubric) for self-checking their submission. Make sure the functions you write are **object-oriented** - either class functions (like Player and Enemy) or class prototype functions such as Enemy.prototype.checkCollisions, and that the keyword 'this' is used appropriately within your class and class prototype functions to refer to the object the function is called upon. Also be sure that the **readme.md** file is updated with your instructions on both how to 1. Run and 2. Play your arcade game.
+In this game the objective is to arrive at the lake without to crash with bug that crossing the road.
 
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
+## To Run
+1. Download this project
+2. Open the index.html in your favorite browser
+
+## Commands
+
+```
+left:  walk to left
+up:    walk to up
+down:  walk to down
+right: walk to right
+```
