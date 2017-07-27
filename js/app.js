@@ -1,5 +1,14 @@
-var Character = function() {
-  this.sprite = "";
+var Character = function(params) {
+  this.sprite = params.sprite || "";
+  this.width = params.width || 0;
+  this.height = params.height || 0;
+  this.x = params.x || 0;
+  this.y = params.y || 0;
+}
+
+// Draw the enemy on the screen, required method for game
+Character.prototype.render = function() {
+  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
 // Enemies our player must avoid
@@ -9,11 +18,23 @@ var Enemy = function() {
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
-    this.sprite = 'images/enemy-bug.png';
-    this.speed = randomGenerate(20, 300);
-    this.x = -130;
-    this.y = randomGenerate(70, 220);
+    var params = {
+      sprite: 'images/enemy-bug.png',
+      width: 70,
+      height: 75
+    };
+    Character.call(this, params);
+    this.reset();
 };
+
+Enemy.prototype = Object.create(Character.prototype);
+Enemy.prototype.constructor = Enemy;
+
+Enemy.prototype.reset = function() {
+  this.x = -130;
+  this.y = randomGenerate(70, 220);
+  this.speed = randomGenerate(150, 450);
+}
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
@@ -22,26 +43,37 @@ Enemy.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
 
+    if (this.x < player.x + player.width &&
+        this.x + this.width > player.x &&
+        this.y < player.y + player.height &&
+        this.height + this.y > player.y) {
+        player.reset();
+    }
+
     if (this.x > ctx.canvas.width) {
-      this.x = -130;
-      this.y = randomGenerate(70, 220);
-      this.speed = randomGenerate(100, 300);
+      this.reset();
     }
 
     this.x += this.speed * dt;
-};
-
-// Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
 var Player = function() {
-  this.sprite = 'images/char-horn-girl.png';
-  this.speed = randomGenerate(20, 300);
+  var params = {
+    sprite: 'images/char-horn-girl.png',
+    width: 84,
+    height: 60
+  };
+  Character.call(this, params);
+  this.reset();
+}
+
+Player.prototype = Object.create(Character.prototype);
+Player.prototype.constructor = Player;
+
+Player.prototype.reset = function() {
   this.x = 200;
   this.y = 410;
 }
@@ -58,15 +90,11 @@ Player.prototype.update = function() {
   }
 
   if (this.y < yLimits[0]) {
-      this.y = yLimits[0];
+      this.reset();
   }
   if (this.y > yLimits[1]) {
       this.y = yLimits[1];
   }
-}
-
-Player.prototype.render = function() {
-  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
 Player.prototype.handleInput = function(key) {
