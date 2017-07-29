@@ -43,13 +43,6 @@ Enemy.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
 
-    if (this.x < player.x + player.width &&
-        this.x + this.width > player.x &&
-        this.y < player.y + player.height &&
-        this.height + this.y > player.y) {
-        player.reset();
-    }
-
     if (this.x > ctx.canvas.width) {
       this.reset();
     }
